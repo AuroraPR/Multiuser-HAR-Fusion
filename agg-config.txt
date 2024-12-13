@@ -1,0 +1,154 @@
+[Configuration]
+
+time_step = 1
+time_step2 = 60
+window_size = 5
+
+processed_data_folder=./data-har/
+raw_data_folder=./raw-har/
+
+#users=ed9c,16fe,f02e
+
+#users=ed9c,0001
+
+2024-07-05=0001,3d57,ed9c
+2024-07-06=0001,3d57,ed9c
+2024-07-07=0001,3d57,ed9c
+2024-07-15=0001,3d57,ed9c
+2024-07-18=16fe,f02e,ed9c
+2024-07-19=16fe,f02e,ed9c
+2024-07-20=16fe,f02e,ed9c
+2024-07-24=16fe,5b66,ed9c
+2024-07-25=16fe,5b66,ed9c
+2024-07-26=16fe,5b66,ed9c
+2024-07-27=16fe,5b66,ed9c
+2024-07-28=16fe,5b66,ed9c
+2024-07-29=16fe,5b66,ed9c
+2024-07-30=16fe,5b66,ed9c
+2024-07-31=16fe,5b66,ed9c
+
+#activities=sleep,resting,cooking
+#learn_activities=resting,cooking
+
+#activities=cooking
+#learn_activities=resting,cooking,exit,toileting,shower,pc,sleep,kitchen
+
+#activities=kitchen
+
+activities=cooking,shower,toileting,pc,sleep,kitchen,resting,exit
+
+learn_activities=toileting,resting,exit,cooking,shower,pc,sleep,kitchen
+
+#priority_activity=sleep,resting,kitchen,pc,cooking,toileting,shower
+
+priority_activity=exit,sleep,resting,kitchen,pc,cooking,toileting,shower
+
+#activities=snack,cooking
+
+#ini_date=2024-05-23 19:33:14 
+#end_date=2024-05-23 20:28:52
+
+#ini_date=2024-07-07 02:00:00
+#end_date=2024-07-08 01:59:59
+
+ini_date=2024-07-31 02:00:00
+end_date=2024-08-01 01:59:59
+
+#cross_days=2024-07-19
+
+#cross_days=2024-07-05,2024-07-06,2024-07-07,2024-07-18,2024-07-19
+#cross_days=2024-07-05,2024-07-06,2024-07-07,2024-07-18,2024-07-19,2024-07-20,2024-07-24,2024-07-25
+#cross_days=2024-07-26,2024-07-27,2024-07-28,2024-07-29,2024-07-30,2024-07-31
+
+cross_days=2024-07-05,2024-07-06,2024-07-07,2024-07-18,2024-07-19,2024-07-20,2024-07-24,2024-07-25,2024-07-26,2024-07-27,2024-07-28,2024-07-29,2024-07-30,2024-07-31
+
+
+
+
+
+
+sensors=fridge_13,tap_22,micro_5,pans_8,dishes_9,shower_24_apertura,hum_shower_25,shower_31,wc_17,sink_21,pc_1_current_consumption
+
+w=22
+h=18
+
+social_val0 = 0.5
+social_ftw = 1,1,1,1,0.8,0.6,0.4,0.2
+social_cut0 = 0.5
+
+[Colors]
+0001=blue
+3d57=red
+ed9c=green
+
+
+[shower]
+user_location=mean:tU
+FPu=1,1,1,0.5
+cut0 = 0.2
+tA = 1,1,1,1,1,1,0.8,0.6,0.4,0.2
+object_sensors=shower_24_apertura,hum_shower_25,shower_31
+processing= sensor_shower,shower
+sensor_shower=(shower_24_apertura + shower_31 )
+shower=(sensor_shower < tA * hum_shower_25 > tA) # (sensor_shower > tA * hum_shower_25 < tA)
+
+
+[cooking]
+user_location=mean:tA
+tA = 1,1,0.5
+cut0 = 0.25
+object_sensors=micro_5,pans_8,dishes_9,fridge_13,tap_22
+processing= sensor_kitchen,sensor_kitchen2,sensor_kitchen3,sensor_kitchen_tA,cooking
+sensor_kitchen=(micro_5 + pans_8) + dishes_9
+sensor_kitchen2=fridge_13+tap_22
+sensor_kitchen3=sensor_kitchen2+sensor_kitchen
+sensor_kitchen_tA=(sensor_kitchen3 > tA)  # (sensor_kitchen3 < tA)
+cooking=(sensor_kitchen_tA > tA)  # (sensor_kitchen_tA < tA)
+
+[toileting]
+user_location=max:tA
+tA = 1,1,1,0.5
+cut0 = 0.25
+object_sensors=wc_17,sink_21
+processing=wc_tA,sink_tA,toileting
+wc_tA=(wc_17 > tA)  # (wc_17 < tA)
+sink_tA=(sink_21 > tA)  # (sink_21 < tA)
+toileting= wc_tA + sink_tA
+
+
+[pc]
+user_location=mean:tA
+tA = 1,1,1,1,1,1,1,1,1,1,0.8,0.6,0.4,0.2
+cut0 = 0.25
+object_sensors=pc_1_current_consumption
+processing=pc
+pc=((pc_1_current_consumption > tA)  # (pc_1_current_consumption < tA))
+
+[resting]
+user_location=mean:tA
+tA = 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0.8,0.6,0.4,0.2
+cut0 = 0.25
+
+[exit]
+user_location=mean:tA
+cut0 = 0.25
+tA = 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0.8,0.6,0.4,0.2
+
+
+[sleep]
+user_location=mean:tA
+cut0 = 0.25
+tA = 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0.8,0.6,0.4,0.2
+
+
+[kitchen]
+user_location=mean:tA
+tA = 1,1,1,1,1,0.8,0.6,0.4,0.2
+cut0 = 0.25
+
+
+[office]
+user_location=mean:tA
+cut0 = 0.25
+tA = 1,1,1,1,1,1,1,1,1,1,0.8,0.6,0.4,0.2
+

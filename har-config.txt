@@ -1,0 +1,195 @@
+[Configuration]
+
+time_step = 1
+time_step2 = 60
+window_size = 5
+
+rooms=livingroom, kitchen,bathroom,office, bedA, bedB
+
+#rooms=bathroom
+
+raw_folder=./raw-har/
+source_folder=./data/
+data_folder=./data-har/
+
+activities=cooking,shower,toileting,pc,sleep,kitchen,resting,exit
+
+#users=ed9c,0001,3d57
+#users=ed9c,16fe,f02e
+
+anchors=1fa0,2eff,399a,45d2,6aca,8171,a304,c492,eb38
+
+2024-07-05=0001,3d57,ed9c
+2024-07-06=0001,3d57,ed9c
+2024-07-07=0001,3d57,ed9c
+2024-07-15=0001,3d57,ed9c
+2024-07-18=16fe,f02e,ed9c
+2024-07-19=16fe,f02e,ed9c
+2024-07-20=16fe,f02e,ed9c
+2024-07-24=16fe,5b66,ed9c
+2024-07-25=16fe,5b66,ed9c
+2024-07-26=16fe,5b66,ed9c
+2024-07-27=16fe,5b66,ed9c
+2024-07-28=16fe,5b66,ed9c
+2024-07-29=16fe,5b66,ed9c
+2024-07-30=16fe,5b66,ed9c
+2024-07-31=16fe,5b66,ed9c
+
+#ini_date=2024-05-23 19:33:14 
+#end_date=2024-05-23 20:28:52
+
+#ini_date=2024-05-06 17:51:30
+#end_date=2024-05-06 18:43:30
+
+#ini_date=2024-07-06 02:00:00
+#end_date=2024-07-07 01:59:59
+
+
+
+#ini_date=2024-05-10 04:00:00
+#end_date=2024-05-10 04:30:00
+
+ini_date=2024-07-31 02:00:00
+end_date=2024-08-01 01:59:59
+
+w=22
+h=18
+
+ix=37.7
+iy=37.7
+
+[Colors]
+0001=blue
+16fe=blue
+3d57=red
+f02e=red
+5b66=red
+ed9c=green
+
+
+
+
+[kitchen]
+
+offW=5
+offH=11
+
+object_sensors=fridge_13,tap_22,micro_5,pans_8,dishes_9
+
+
+fridge_13=0x3
+tap_22=1x4
+micro_5=2x4
+pans_8=3x4
+dishes_9=4x4
+
+[bathroom]
+
+offW=12
+offH=11
+
+object_sensors=wc_17,sink_21,shower_24_apertura,shower_31
+continous_sensors=hum_shower_25
+
+
+wc_17=1x0
+sink_21=3x2
+hum_shower_25=5x0
+shower_24_apertura=4x0
+shower_31=4x1
+
+[livingroom]
+offW=0
+offH=1
+ 
+continous_sensors=tv_30_current_consumption
+tv_30_current_consumption=6x3
+
+[office]
+offW=9
+offH=0
+
+object_sensors=closet_2
+continous_sensors=pc_1_current_consumption
+
+pc_1_current_consumption=2x0
+closet_2=5x5
+
+
+[bedA]
+offW=15
+offH=2
+
+object_sensors=closet_3
+
+closet_3=3x0
+
+
+
+[bedB]
+offW=15
+offH=11
+
+object_sensors=closet_4
+closet_4=0x3
+
+
+
+[hum_shower_25]
+type=relative_change
+avg_window=60
+current_window=5
+condition= hum_shower_25 > 1
+
+[pc_1_current_consumption]
+type=absolute_value
+condition= pc_1_current_consumption > 100
+
+
+[tv_30_current_consumption]
+type=absolute_value
+condition= tv_30_current_consumption > 20
+
+
+[shower_24_apertura]
+type=relative_change
+avg_window=300
+current_window=60
+condition= shower_24_apertura != 0
+
+
+
+[shower_31]
+type=max_timestep
+
+
+[fridge_13]
+type=max_timestep
+
+[tap_22]
+type=max_timestep
+
+[micro_5]
+type=max_timestep
+
+[pans_8]
+type=max_timestep
+
+[dishes_9]
+type=max_timestep
+
+[wc_17]
+type=max_timestep
+
+[sink_21]
+type=max_timestep
+
+
+[closet_2]
+type=max_timestep
+
+[closet_3]
+type=max_timestep
+
+[closet_4]
+type=max_timestep
